@@ -6,8 +6,8 @@ import PortfolioProjectPreview from './components/PortfolioProjectPreview';
 const App = () => {
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [wireframeMode, setWireframeMode] = useState(false); // Wireframe toggle state
+  const [loading, setLoading] = useState(true);
+  const [wireframeMode, setWireframeMode] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -18,7 +18,7 @@ const App = () => {
 
         const tableName = process.env.REACT_APP_AIRTABLE_TABLE_NAME;
 
-        const uniqueRecords = new Map(); // Track records by ID to avoid duplicates
+        const uniqueRecords = new Map();
 
         base(tableName)
           .select({ view: 'Grid view' })
@@ -36,7 +36,7 @@ const App = () => {
                 }
               });
 
-              setProjects(Array.from(uniqueRecords.values())); // Convert Map to Array
+              setProjects(Array.from(uniqueRecords.values()));
               fetchNextPage();
             },
             (err) => {
@@ -44,13 +44,13 @@ const App = () => {
                 console.error('Airtable error:', err);
                 setError(err);
               }
-              setLoading(false); // Loading complete
+              setLoading(false);
             }
           );
       } catch (err) {
         console.error('Fetch error:', err);
         setError(err);
-        setLoading(false); // Loading complete
+        setLoading(false);
       }
     };
 
@@ -69,12 +69,11 @@ const App = () => {
     <div className={`bg-app-bg min-h-screen ${wireframeMode ? 'wireframe' : ''}`}>
       <button
         onClick={() => setWireframeMode(!wireframeMode)}
-        className="fixed top-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded shadow"
+        className="fixed top-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded shadow z-50" // Ensure high z-index
       >
         Toggle Wireframe
       </button>
 
-      {/* Show Loader While Loading */}
       {loading ? (
         <div className="flex justify-center items-center min-h-screen">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>

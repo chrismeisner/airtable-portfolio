@@ -51,5 +51,5 @@ body {
 
 /* Wireframe mode */
 .wireframe div {
-  outline: 1px dashed rgba(0, 0, 0, 0.1);
+  outline: 1px dashed rgba(0, 0, 0, 0.3); /* Adjusted opacity for better visibility */
 }
