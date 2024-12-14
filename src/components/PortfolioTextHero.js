@@ -46,7 +46,7 @@ const PortfolioTextHero = ({
   ],
 }) => {
   return (
-	<div className="py-12 px-6 lg:px-16">
+  <div className="px-6 sm:px-8 lg:px-16 pt-16 sm:pt-20 lg:pt-40 pb-16">
 	  <div className="max-w-[1024px] mx-auto">
 		<div>
 		  <h1>{title}</h1>

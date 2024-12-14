@@ -60,7 +60,7 @@ const PortfolioProjectPreview = ({ title, url, description, tags, images }) => {
   }
 
   return (
-	<div className="py-12 px-6 lg:px-16 animate-fade-in">
+	<div className="py-8 px-4 sm:px-6 lg:py-16 lg:px-20 animate-fade-in">
 	  <div className="max-w-[1024px] mx-auto flex flex-col-reverse lg:grid lg:grid-cols-[33%_67%] gap-8 items-start">
 		{/* Text Content */}
 		<div className="w-full lg:w-auto">
@@ -74,7 +74,7 @@ const PortfolioProjectPreview = ({ title, url, description, tags, images }) => {
 			{url}
 		  </a>
 		  <p className="mt-4 text-lg text-gray-700">{description}</p>
-		  <div className="mt-6 flex space-x-4">
+		  <div className="mt-6 flex space-x-2">
 			{tags.map((tag, index) => (
 			  <span key={index} className="tag-style">
 				{tag}
@@ -104,8 +104,8 @@ const PortfolioProjectPreview = ({ title, url, description, tags, images }) => {
 			{images.map((_, index) => (
 			  <button
 				key={index}
-				className={`w-3 h-3 rounded-full ${
-				  index === currentSlide ? 'bg-indigo-600' : 'bg-gray-400'
+				className={`w-2 h-2 rounded-full ${
+				  index === currentSlide ? 'bg-gray-700' : 'bg-gray-300'
 				}`}
 				onClick={() => {
 				  setCurrentSlide(index);

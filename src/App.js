@@ -66,10 +66,10 @@ const App = () => {
   }
 
   return (
-    <div className={`bg-app-bg min-h-screen ${wireframeMode ? 'wireframe' : ''}`}>
+    <div className={`bg-app-bg min-h-screen ${wireframeMode ? 'wireframe' : ''} py-6 sm:py-12 lg:py-4 px-4 sm:px-8 lg:px-4`}>
       <button
         onClick={() => setWireframeMode(!wireframeMode)}
-        className="fixed top-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded shadow z-50" // Ensure high z-index
+        className="fixed top-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded shadow z-50"
       >
         Toggle Wireframe
       </button>
