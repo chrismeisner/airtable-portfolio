@@ -1,0 +1,103 @@
+/* SimpleTable.css - Dark Mode Table Styles */
+.table-dark {
+  background-color: #1f2937; /* Dark background */
+  color: #f9fafb; /* Light text */
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-dark th,
+.table-dark td {
+  border: 1px solid #374151; /* Darker borders */
+  padding: 8px;
+  text-align: left;
+}
+
+.table-dark th {
+  background-color: #111827; /* Darker header */
+  color: #f3f4f6; /* Light text for headers */
+  font-weight: bold;
+}
+
+.table-dark tr:nth-child(even) {
+  background-color: #374151; /* Slightly lighter rows */
+}
+
+.table-dark tr:hover {
+  background-color: #4b5563; /* Highlight on hover */
+}
+
+.table-dark a {
+  color: #93c5fd; /* Light blue for links */
+  text-decoration: underline;
+}
+
+.table-dark .placeholder {
+  color: #9ca3af; /* Subtle text for empty or placeholder rows */
+}
+
+/* Limit description to one line initially */
+.description-cell {
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 1.5em; /* Approximate height for one line of text */
+  min-width: 200px; /* Set a minimum width */
+  max-width: 400px; /* Set a maximum width */
+  transition: max-height 0.3s ease, white-space 0.3s ease;
+}
+
+/* Expand the description on click */
+.description-cell.expanded {
+  white-space: normal;
+  max-height: 10em; /* Set a reasonable limit for expanded height */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .description-cell {
+	min-width: 150px;
+	max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .description-cell {
+	min-width: 100px;
+	max-width: 200px;
+  }
+}
+
+/* Images Column */
+.images-cell {
+  display: flex;
+  gap: 8px; /* Space between images */
+  align-items: center;
+}
+
+.image-preview {
+  width: 2.5rem; /* Small square size */
+  height: 2.5rem;
+  object-fit: cover; /* Ensures the image covers the square without distortion */
+  border-radius: 4px; /* Optional: Rounded corners */
+  border: 1px solid #374151; /* Optional: Border for better visibility */
+  cursor: pointer;
+}
+
+/* Large Image Preview */
+.large-image-preview {
+  position: fixed; /* Fixed positioning to follow the cursor */
+  pointer-events: none; /* Ignore pointer events for the preview */
+  z-index: 1000; /* Make sure it appears above everything */
+  transform: translate(-50%, -50%);
+}
+
+.large-image-preview img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover; /* Maintain aspect ratio while filling the box */
+  border: 2px solid #374151;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Optional: Add shadow for better visibility */
+}
