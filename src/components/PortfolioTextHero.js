@@ -46,11 +46,11 @@ const PortfolioTextHero = ({
   ],
 }) => {
   return (
-  <div className="px-6 sm:px-8 lg:px-16 pt-16 sm:pt-20 lg:pt-40 pb-16">
+	<div className="px-6 sm:px-8 lg:px-16 pt-16 sm:pt-20 lg:pt-40 pb-16">
 	  <div className="max-w-[1024px] mx-auto">
 		<div>
 		  <h1>{title}</h1>
-		  <p className="mt-4 text-lg text-gray-700 sm:text-xl">
+		  <p className="mt-4 text-base text-gray-700 sm:text-xl">
 			{subtitle}{' '}
 			<a href={linkHref} className="text-indigo-600 underline font-medium">
 			  {linkText}
@@ -67,11 +67,11 @@ const PortfolioTextHero = ({
 			<div className="space-y-6">
 			  {skills.map((skill, index) => (
 				<div key={index} className="flex w-full">
-				  {/* Red Section */}
-				  <div className="w-1/2 flex items-start space-x-4">
+				  {/* Left Section */}
+				  <div className="w-1/2 lg:w-1/3 flex items-start space-x-4">
 					<div className="text-xl">{skill.icon}</div>
 					<div>
-					  <h4 className="text-lg font-semibold text-gray-900">{skill.title}</h4>
+					  <h4 className="text-base text-gray-900">{skill.title}</h4>
 					  {skill.link && (
 						<a
 						  href={skill.link.href}
@@ -82,8 +82,8 @@ const PortfolioTextHero = ({
 					  )}
 					</div>
 				  </div>
-				  {/* Lime Section */}
-				  <div className="w-1/2">
+				  {/* Right Section */}
+				  <div className="w-1/2 lg:w-2/3">
 					<p className="text-gray-600">{skill.description}</p>
 				  </div>
 				</div>
@@ -99,17 +99,17 @@ const PortfolioTextHero = ({
 			<div className="space-y-6">
 			  {pricing.map((price, index) => (
 				<div key={index} className="flex w-full">
-				  {/* Red Section */}
-				  <div className="w-1/2 flex items-start space-x-4">
+				  {/* Left Section */}
+				  <div className="w-1/2 lg:w-1/3 flex items-start space-x-4">
 					<div className="text-xl">{price.icon}</div>
 					<div>
-					  <h4 className="text-lg font-semibold text-gray-900">{price.type}</h4>
+					  <h4 className="text-base text-gray-900">{price.type}</h4>
 					  <p className="text-gray-600">{price.hours}</p>
 					</div>
 				  </div>
-				  {/* Lime Section */}
-				  <div className="w-1/2">
-					<p className="text-lg font-medium text-gray-900">{price.price}</p>
+				  {/* Right Section */}
+				  <div className="w-1/2 lg:w-2/3">
+					<p className="text-base font-medium text-gray-900">{price.price}</p>
 				  </div>
 				</div>
 			  ))}

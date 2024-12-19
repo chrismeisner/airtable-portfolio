@@ -1,0 +1,39 @@
+/* SwiperStyles.css */
+
+/* Import Swiper Core Styles */
+@import "swiper/css";
+@import "swiper/css/pagination";
+@import "swiper/css/navigation";
+
+/* Customize Swiper Navigation Arrows */
+.swiper-button-prev,
+.swiper-button-next {
+  @apply text-indigo-600 hover:text-indigo-800;
+}
+
+/* Customize Swiper Pagination Bullets */
+.swiper-pagination-bullet {
+  @apply bg-indigo-600;
+}
+
+.swiper-pagination-bullet-active {
+  @apply bg-indigo-800;
+}
+
+/* Optional: Override Swiper's Default Styles */
+.mySwiper {
+  /* Add any custom styles for the Swiper container if needed */
+}
+
+/* Example of adding a custom media query if needed */
+@media (min-width: 768px) {
+  /* Add any additional styles for tablet screens here */
+}
+
+@media (min-width: 1024px) {
+  /* Add any additional styles for small desktops here */
+}
+
+@media (min-width: 1920px) {
+  /* Add any additional styles for large desktops here */
+}

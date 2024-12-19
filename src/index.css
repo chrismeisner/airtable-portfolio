@@ -1,5 +1,15 @@
+/* File: /src/index.css */
+
+/* Import Inter Font */
 @import "@fontsource/inter/index.css";
 
+/* Remove these Swiper imports
+@import "swiper/css";
+@import "swiper/css/pagination";
+@import "swiper/css/navigation";
+*/
+
+/* Define Atlas Grotesk Font */
 @font-face {
   font-family: "Atlas Grotesk";
   src: url("./assets/fonts/atlas-grotesk.otf") format("opentype");
@@ -7,28 +17,29 @@
   font-style: normal;
 }
 
+/* Tailwind Directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global base font size */
+/* Global Base Font Size */
 html {
   font-size: 14px;
 }
 
-/* Set global background color */
+/* Set Global Background Color */
 body {
   @apply bg-app-bg;
 }
 
-/* Add reusable tag style */
+/* Add Reusable Tag Style */
 @layer components {
   .tag-style {
 	@apply inline-flex items-center gap-2 px-3 py-1 rounded bg-[rgba(34,0,255,0.11)] text-indigo-700 text-sm font-medium;
   }
 }
 
-/* Global h1 and h2 styles */
+/* Global h1 and h2 Styles */
 @layer base {
   h1 {
 	font-family: "Atlas Grotesk", Inter, sans-serif;
@@ -49,7 +60,10 @@ body {
   }
 }
 
-/* Wireframe mode */
+/* Wireframe Mode */
 .wireframe div {
   outline: 1px dashed rgba(0, 0, 0, 0.2); /* Adjusted opacity for better visibility */
 }
+
+/* Optional: Remove Swiper's custom styles if moved
+*/
