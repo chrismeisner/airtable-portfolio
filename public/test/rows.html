@@ -32,7 +32,7 @@
 	  overflow: hidden;
 	  text-overflow: ellipsis;
 	  white-space: nowrap;
-	  max-width: 200px; /* Adjust based on your layout */
+	  max-width: 100px; /* Further reduced to prevent horizontal scrolling */
 	}
 	/* Wireframe Mode Styles */
 	.wireframe div,
@@ -58,34 +58,35 @@
   </div>
   
   <!-- Main Content -->
-  <!-- Removed sm:max-w-lg and md:max-w-6xl, and overflow-x-auto -->
   <div class="w-full p-4 bg-gray-800 text-gray-200 rounded-lg shadow-md mt-8">
-	<table class="min-w-full divide-y divide-gray-700">
+	<table class="min-w-full divide-y divide-gray-700 table-fixed">
 	  <thead class="bg-gray-700">
 		<tr>
-		  <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">Year</th>
-		  <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">Project Title</th>
-		  <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">Role</th>
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap w-16">Year</th>
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap w-48">Project</th>
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap w-32">Role</th>
 		  <!-- Hide "Overview" column on mobile -->
-		  <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell">Overview</th>
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell w-64">Overview</th>
 		  <!-- Hide "Images" column on mobile -->
-		  <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell">Images</th>
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell w-20">Images</th>
 		</tr>
 	  </thead>
 	  <tbody class="bg-gray-800 divide-y divide-gray-700">
 		<!-- Row 1 -->
 		<tr class="hover:bg-gray-700 cursor-pointer" onclick="toggleCollapse('collapsible-content-1')">
-		  <td class="px-6 py-4 whitespace-nowrap">2023</td>
-		  <td class="px-6 py-4 whitespace-nowrap truncate" title="E-Commerce Platform Redesign">E-Commerce Platform Redesign</td>
-		  <td class="px-6 py-4 whitespace-nowrap">
-			<!-- Tags -->
-			<span class="inline-block bg-indigo-700 text-gray-100 text-xs px-2 py-1 rounded-full mr-2">Design</span>
-			<span class="inline-block bg-green-700 text-gray-100 text-xs px-2 py-1 rounded-full">Development</span>
+		  <td class="px-4 py-3 whitespace-nowrap">2023</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate" title="E-Commerce Platform Redesign">E-Commerce Platform Redesign</td>
+		  <td class="px-4 py-3 whitespace-nowrap">
+			<!-- Tags Container with Flex Column -->
+			<div class="flex flex-col space-y-2">
+			  <span class="inline-block bg-indigo-700 text-gray-100 text-xs px-2 py-1 rounded-full">Design</span>
+			  <span class="inline-block bg-green-700 text-gray-100 text-xs px-2 py-1 rounded-full">Development</span>
+			</div>
 		  </td>
 		  <!-- Hide "Overview" column on mobile -->
-		  <td class="px-6 py-4 whitespace-nowrap truncate hidden md:table-cell" title="Redesigned the e-commerce platform to enhance user experience and increase conversion rates.">Redesigned the e-commerce platform to enhance user experience and increase conversion rates.</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell" title="Redesigned the e-commerce platform to enhance user experience and increase conversion rates.">Redesigned the e-commerce platform to enhance user experience and increase conversion rates.</td>
 		  <!-- Hide "Images" column on mobile -->
-		  <td class="px-6 py-4 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-1">0</td>
+		  <td class="px-4 py-3 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-1">0</td>
 		</tr>
 		<tr>
 		  <td colspan="5" class="p-0">
@@ -120,17 +121,19 @@
 		
 		<!-- Row 2 -->
 		<tr class="hover:bg-gray-700 cursor-pointer" onclick="toggleCollapse('collapsible-content-2')">
-		  <td class="px-6 py-4 whitespace-nowrap">2022</td>
-		  <td class="px-6 py-4 whitespace-nowrap truncate" title="Mobile App Development">Mobile App Development</td>
-		  <td class="px-6 py-4 whitespace-nowrap">
-			<!-- Tags -->
-			<span class="inline-block bg-blue-700 text-gray-100 text-xs px-2 py-1 rounded-full mr-2">Prototyping</span>
-			<span class="inline-block bg-red-700 text-gray-100 text-xs px-2 py-1 rounded-full">Testing</span>
+		  <td class="px-4 py-3 whitespace-nowrap">2022</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate" title="Mobile App Development">Mobile App Development</td>
+		  <td class="px-4 py-3 whitespace-nowrap">
+			<!-- Tags Container with Flex Column -->
+			<div class="flex flex-col space-y-2">
+			  <span class="inline-block bg-blue-700 text-gray-100 text-xs px-2 py-1 rounded-full">Prototyping</span>
+			  <span class="inline-block bg-red-700 text-gray-100 text-xs px-2 py-1 rounded-full">Testing</span>
+			</div>
 		  </td>
 		  <!-- Hide "Overview" column on mobile -->
-		  <td class="px-6 py-4 whitespace-nowrap truncate hidden md:table-cell" title="Developed a cross-platform mobile application to streamline user interactions and improve engagement.">Developed a cross-platform mobile application to streamline user interactions and improve engagement.</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell" title="Developed a cross-platform mobile application to streamline user interactions and improve engagement.">Developed a cross-platform mobile application to streamline user interactions and improve engagement.</td>
 		  <!-- Hide "Images" column on mobile -->
-		  <td class="px-6 py-4 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-2">0</td>
+		  <td class="px-4 py-3 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-2">0</td>
 		</tr>
 		<tr>
 		  <td colspan="5" class="p-0">
@@ -160,17 +163,19 @@
 		
 		<!-- Row 3 -->
 		<tr class="hover:bg-gray-700 cursor-pointer" onclick="toggleCollapse('collapsible-content-3')">
-		  <td class="px-6 py-4 whitespace-nowrap">2021</td>
-		  <td class="px-6 py-4 whitespace-nowrap truncate" title="Website Optimization">Website Optimization</td>
-		  <td class="px-6 py-4 whitespace-nowrap">
-			<!-- Tags -->
-			<span class="inline-block bg-purple-700 text-gray-100 text-xs px-2 py-1 rounded-full mr-2">SEO</span>
-			<span class="inline-block bg-yellow-600 text-gray-900 text-xs px-2 py-1 rounded-full">Performance</span>
+		  <td class="px-4 py-3 whitespace-nowrap">2021</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate" title="Website Optimization">Website Optimization</td>
+		  <td class="px-4 py-3 whitespace-nowrap">
+			<!-- Tags Container with Flex Column -->
+			<div class="flex flex-col space-y-2">
+			  <span class="inline-block bg-purple-700 text-gray-100 text-xs px-2 py-1 rounded-full">SEO</span>
+			  <span class="inline-block bg-yellow-600 text-gray-900 text-xs px-2 py-1 rounded-full">Performance</span>
+			</div>
 		  </td>
 		  <!-- Hide "Overview" column on mobile -->
-		  <td class="px-6 py-4 whitespace-nowrap truncate hidden md:table-cell" title="Optimized website performance to improve load times and search engine rankings.">Optimized website performance to improve load times and search engine rankings.</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell" title="Optimized website performance to improve load times and search engine rankings.">Optimized website performance to improve load times and search engine rankings.</td>
 		  <!-- Hide "Images" column on mobile -->
-		  <td class="px-6 py-4 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-3">0</td>
+		  <td class="px-4 py-3 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-3">0</td>
 		</tr>
 		<tr>
 		  <td colspan="5" class="p-0">
