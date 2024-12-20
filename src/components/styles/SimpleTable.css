@@ -11,6 +11,7 @@
   border: 1px solid #374151; /* Darker borders */
   padding: 8px;
   text-align: left;
+  vertical-align: top;
 }
 
 .table-dark th {
@@ -36,15 +37,15 @@
   color: #9ca3af; /* Subtle text for empty or placeholder rows */
 }
 
-/* Limit description to one line initially */
+/* Description column narrower */
 .description-cell {
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-height: 1.5em; /* Approximate height for one line of text */
-  min-width: 200px; /* Set a minimum width */
-  max-width: 400px; /* Set a maximum width */
+  max-height: 1.5em;
+  min-width: 150px; 
+  max-width: 250px; /* Reduced max width */
   transition: max-height 0.3s ease, white-space 0.3s ease;
 }
 
@@ -52,20 +53,21 @@
 .description-cell.expanded {
   white-space: normal;
   max-height: 10em; /* Set a reasonable limit for expanded height */
+  overflow: visible;
 }
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .description-cell {
-	min-width: 150px;
-	max-width: 300px;
+	min-width: 100px;
+	max-width: 200px;
   }
 }
 
 @media (max-width: 480px) {
   .description-cell {
-	min-width: 100px;
-	max-width: 200px;
+	min-width: 80px;
+	max-width: 150px;
   }
 }
 
@@ -73,7 +75,7 @@
 .images-cell {
   display: flex;
   gap: 8px; /* Space between images */
-  align-items: center;
+  align-items: flex-start;
 }
 
 .image-preview {
@@ -87,17 +89,53 @@
 
 /* Large Image Preview */
 .large-image-preview {
-  position: fixed; /* Fixed positioning to follow the cursor */
+  position: fixed; /* Fixed positioning */
   pointer-events: none; /* Ignore pointer events for the preview */
-  z-index: 1000; /* Make sure it appears above everything */
-  transform: translate(-50%, -50%);
+  z-index: 1000; /* Ensure it appears above everything */
 }
 
 .large-image-preview img {
-  width: 400px;
-  height: 400px;
-  object-fit: cover; /* Maintain aspect ratio while filling the box */
-  border: 2px solid #374151;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Optional: Add shadow for better visibility */
+  width: 400px; 
+  height: auto;
+  object-fit: contain; /* Ensure the image fits without cropping */
+  border: none; /* Remove any border */
+  margin: 0; /* Remove any margin */
+  padding: 0; /* Remove any padding */
+  box-shadow: none; /* Ensure no shadow is applied */
+  background: none; /* Ensure no background styling is applied */
+}
+
+/* Expanded row styling */
+.expanded-content-row {
+  overflow: hidden; /* Prevent content from showing when collapsed */
+  height: 0; /* Collapsed by default */
+  transition: height 0.3s ease; /* Smooth height animation */
+  background-color: #1f2937; /* Match the dark theme */
+}
+
+.selected-image-container {
+  padding: 16px; /* Add some padding */
+  text-align: center; /* Center the image */
+  background: #333; /* Grey background for the expanded row content */
+  border-top: 1px solid #444; /* Separator between the main row and expanded content */
+}
+
+.expanded-images-row {
+  display: flex;
+  gap: 16px; /* Space between images */
+  justify-content: center; /* Center align the row of images */
+  flex-wrap: wrap; /* Wrap images to the next line if they don't fit */
+}
+
+.expanded-image {
+  max-width: 150px; /* Larger image width */
+  max-height: 150px; /* Larger image height */
+  object-fit: cover; /* Ensure images fit without distortion */
+  border-radius: 8px; /* Optional: Rounded corners */
+  border: 1px solid #444; /* Optional: Add a border for better visibility */
+}
+
+.selected-image-placeholder {
+  color: #fff; /* White text for placeholder */
+  font-size: 1rem;
 }
