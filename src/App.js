@@ -6,6 +6,7 @@ import SimpleHero from "./components/SimpleHero";
 import Capabilities from "./components/Capabilities";
 import PortfolioProjectPreview from "./components/PortfolioProjectPreview";
 import SimpleTable from "./components/SimpleTable";
+import CollapsibleTable from "./components/CollapsibleTable"; // Import the new component
 import Process from "./components/Process";
 import Testimonials from "./components/Testimonials";
 import About from "./components/About";
@@ -19,12 +20,15 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [wireframeMode, setWireframeMode] = useState(false);
 
+  console.log("App component rendered");
+
   useEffect(() => {
+    console.log("Fetching projects and testimonials from Airtable");
     const fetchProjectsAndTestimonials = async () => {
       try {
-        const base = new Airtable({ apiKey: process.env.REACT_APP_AIRTABLE_API_KEY }).base(
-          process.env.REACT_APP_AIRTABLE_BASE_ID
-        );
+        const base = new Airtable({
+          apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
+        }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
         const projectsTable = process.env.REACT_APP_AIRTABLE_TABLE_NAME;
         const testimonialsTable = "Testimonials";
@@ -67,8 +71,10 @@ const App = () => {
               (err) => {
                 if (err) {
                   console.error("Airtable Projects error:", err);
+                  console.log("Rejecting fetchProjects promise");
                   reject(err);
                 } else {
+                  console.log("Resolving fetchProjects promise");
                   resolve(Array.from(uniqueRecords.values()));
                 }
               }
@@ -82,7 +88,10 @@ const App = () => {
               (records, fetchNextPage) => {
                 records.forEach((record) => {
                   const visibility = record.fields["Visibility"];
-                  if (visibility === "Yes" && !uniqueTestimonials.has(record.id)) {
+                  if (
+                    visibility === "Yes" &&
+                    !uniqueTestimonials.has(record.id)
+                  ) {
                     uniqueTestimonials.set(record.id, {
                       quote: record.fields["Quote"] || "",
                       name: record.fields["Name"] || "Anonymous",
@@ -98,15 +107,23 @@ const App = () => {
               (err) => {
                 if (err) {
                   console.error("Airtable Testimonials error:", err);
+                  console.log("Rejecting fetchTestimonials promise");
                   reject(err);
                 } else {
+                  console.log("Resolving fetchTestimonials promise");
                   resolve(Array.from(uniqueTestimonials.values()));
                 }
               }
             );
         });
 
-        const [allProjects, allTestimonials] = await Promise.all([fetchProjects, fetchTestimonials]);
+        const [allProjects, allTestimonials] = await Promise.all([
+          fetchProjects,
+          fetchTestimonials,
+        ]);
+
+        console.log("Fetched projects:", allProjects);
+        console.log("Fetched testimonials:", allTestimonials);
 
         setProjects(allProjects);
 
@@ -116,6 +133,9 @@ const App = () => {
         const table = allProjects.filter((project) =>
           project.visibility.includes("Table")
         );
+
+        console.log("Featured projects:", featured);
+        console.log("Table projects:", table);
 
         setFeaturedProjects(featured);
         setTableProjects(table);
@@ -133,6 +153,7 @@ const App = () => {
   }, []);
 
   if (error) {
+    console.log("Rendering error state");
     return (
       <div className="bg-red-100 text-red-800 p-4">
         <p>Error fetching projects: {error.message}</p>
@@ -147,16 +168,24 @@ const App = () => {
       } py-6 sm:py-12 lg:py-4 px-4 sm:px-8 lg:px-4`}
     >
       <button
-        onClick={() => setWireframeMode(!wireframeMode)}
+        onClick={() => {
+          console.log(
+            `Wireframe mode toggled to ${!wireframeMode ? "ON" : "OFF"}`
+          );
+          setWireframeMode(!wireframeMode);
+        }}
         className="fixed top-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded shadow z-50"
       >
         Toggle Wireframe
       </button>
 
       {loading ? (
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-        </div>
+        console.log("Rendering loading state"),
+        (
+          <div className="flex justify-center items-center min-h-screen">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+          </div>
+        )
       ) : (
         <div className="animate-fade-in">
           {/* Hero Section */}
@@ -168,18 +197,21 @@ const App = () => {
           {/* Portfolio Projects Section */}
           <section className="mt-12">
             <h2 className="text-2xl font-bold mb-4">Portfolio Projects</h2>
-            {featuredProjects.map((project, index) => (
-              <PortfolioProjectPreview
-                key={index}
-                title={project.title}
-                url={project.url}
-                urlTitle={project.urlTitle}
-                description={project.description}
-                tags={project.tags}
-                images={project.images}
-                year={project.year}
-              />
-            ))}
+            {featuredProjects.map((project, index) => {
+              console.log(`Rendering PortfolioProjectPreview for project ${index}`);
+              return (
+                <PortfolioProjectPreview
+                  key={index}
+                  title={project.title}
+                  url={project.url}
+                  urlTitle={project.urlTitle}
+                  description={project.description}
+                  tags={project.tags}
+                  images={project.images}
+                  year={project.year}
+                />
+              );
+            })}
           </section>
 
           {/* Process Section */}
@@ -194,7 +226,12 @@ const App = () => {
           {/* Projects Table Section */}
           <section className="mt-12">
             <h2 className="text-2xl font-bold mb-4">Projects Table</h2>
+            {/* Existing SimpleTable */}
             <SimpleTable data={tableProjects} />
+
+            {/* New CollapsibleTable */}
+            <h2 className="text-2xl font-bold my-4">Collapsible Projects Table</h2>
+            <CollapsibleTable data={tableProjects} />
           </section>
         </div>
       )}

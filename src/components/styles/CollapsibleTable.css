@@ -1,0 +1,44 @@
+/* CollapsibleTable.css */
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+/* When expanded, we set max-height dynamically via inline styles from JS */
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.overview-column {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Modal transitions */
+.modal-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.modal-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease-in;
+}
+
+.wireframe div,
+.wireframe table,
+.wireframe th,
+.wireframe td,
+.wireframe span,
+.wireframe button {
+  border: 0.5px dashed #FFFFFF;
+  box-sizing: border-box;
+}
