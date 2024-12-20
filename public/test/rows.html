@@ -27,14 +27,11 @@
 	  pointer-events: auto;
 	  transition: opacity 0.3s ease-in;
 	}
-	/* Truncate overview text with ellipsis */
 	.truncate {
 	  overflow: hidden;
 	  text-overflow: ellipsis;
 	  white-space: nowrap;
-	  max-width: 100px; /* Further reduced to prevent horizontal scrolling */
 	}
-	/* Wireframe Mode Styles */
 	.wireframe div,
 	.wireframe table,
 	.wireframe th,
@@ -44,6 +41,13 @@
 	  border: .5px dashed #FFFFFF;
 	  box-sizing: border-box;
 	}
+	/* Custom class for the Overview column */
+	.overview-column {
+	  max-width: 250px; /* Adjust the value as needed */
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  white-space: nowrap;
+	}
   </style>
 </head>
 <body class="bg-gray-900 flex flex-col justify-start min-h-screen relative">
@@ -51,40 +55,68 @@
   <div class="w-full bg-gray-800 text-white py-16 px-4 text-center relative">
 	<h1 class="text-4xl md:text-5xl font-bold mb-4">Our Projects</h1>
 	<p class="text-lg md:text-2xl text-gray-300">Explore the projects that showcase our expertise and dedication.</p>
-	<!-- Wireframe Mode Toggle Button -->
 	<button id="wireframe-toggle" class="absolute top-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
 	  Enable Wireframe Mode
 	</button>
   </div>
   
-  <!-- Main Content -->
-  <div class="w-full p-4 bg-gray-800 text-gray-200 rounded-lg shadow-md mt-8">
-	<table class="min-w-full divide-y divide-gray-700 table-fixed">
+  <!-- Main Content with Maximum Width -->
+  <div class="w-full max-w-screen-xl mx-auto p-4 bg-gray-800 text-gray-200 rounded-lg shadow-md mt-8 overflow-x-auto">
+	<!-- Changed from table-fixed to table-auto for dynamic column widths -->
+	<table class="min-w-full divide-y divide-gray-700 table-auto">
 	  <thead class="bg-gray-700">
 		<tr>
-		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap w-16">Year</th>
-		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap w-48">Project</th>
-		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap w-32">Role</th>
-		  <!-- Hide "Overview" column on mobile -->
-		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell w-64">Overview</th>
+		  <!-- Updated Year column header -->
+		  <th class="px-2 md:px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+			Year
+		  </th>
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">Project</th>
+		  <!-- Hide Role column on mobile -->
+		  <!-- Removed fixed width (w-32) and set to auto -->
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell">
+			Role
+		  </th>
+		  <!-- Hide "Overview" column on mobile with Truncation -->
+		  <th
+			class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell overview-column"
+			title="Overview"
+		  >
+			Overview
+		  </th>
 		  <!-- Hide "Images" column on mobile -->
-		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell w-20">Images</th>
+		  <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap hidden md:table-cell">
+			Images
+		  </th>
 		</tr>
 	  </thead>
 	  <tbody class="bg-gray-800 divide-y divide-gray-700">
 		<!-- Row 1 -->
 		<tr class="hover:bg-gray-700 cursor-pointer" onclick="toggleCollapse('collapsible-content-1')">
-		  <td class="px-4 py-3 whitespace-nowrap">2023</td>
-		  <td class="px-4 py-3 whitespace-nowrap truncate" title="E-Commerce Platform Redesign">E-Commerce Platform Redesign</td>
-		  <td class="px-4 py-3 whitespace-nowrap">
-			<!-- Tags Container with Flex Column -->
-			<div class="flex flex-col space-y-2">
+		  <!-- Updated Year cell -->
+		  <td class="px-2 md:px-4 py-3 whitespace-nowrap text-center">2023</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate" title="E-Commerce Platform Redesign">
+			E-Commerce Platform Redesign
+			<!-- Mobile-only Role tags (stacked under Project) -->
+			<div class="md:hidden mt-2">
+			  <span class="inline-block bg-indigo-700 text-gray-100 text-xs px-2 py-1 rounded-full mr-1">Design</span>
+			  <span class="inline-block bg-green-700 text-gray-100 text-xs px-2 py-1 rounded-full">Development</span>
+			</div>
+		  </td>
+		  <!-- Role column hidden on mobile -->
+		  <td class="px-4 py-3 whitespace-nowrap hidden md:table-cell">
+			<!-- Updated Flex Classes Here: flex-nowrap to prevent wrapping -->
+			<div class="flex flex-nowrap space-x-2">
 			  <span class="inline-block bg-indigo-700 text-gray-100 text-xs px-2 py-1 rounded-full">Design</span>
 			  <span class="inline-block bg-green-700 text-gray-100 text-xs px-2 py-1 rounded-full">Development</span>
 			</div>
 		  </td>
-		  <!-- Hide "Overview" column on mobile -->
-		  <td class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell" title="Redesigned the e-commerce platform to enhance user experience and increase conversion rates.">Redesigned the e-commerce platform to enhance user experience and increase conversion rates.</td>
+		  <!-- Hide "Overview" column on mobile with Truncation -->
+		  <td
+			class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell overview-column"
+			title="Redesigned the e-commerce platform to enhance user experience and increase conversion rates."
+		  >
+			Redesigned the e-commerce platform to enhance user experience and increase conversion rates.
+		  </td>
 		  <!-- Hide "Images" column on mobile -->
 		  <td class="px-4 py-3 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-1">0</td>
 		</tr>
@@ -101,18 +133,18 @@
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/200');" 
-					onclick="handleImageClick(event, 'collapsible-content-1', 0)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-1', 0)"
+				  ></div>
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/201');" 
-					onclick="handleImageClick(event, 'collapsible-content-1', 1)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-1', 1)"
+				  ></div>
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/202');" 
-					onclick="handleImageClick(event, 'collapsible-content-1', 2)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-1', 2)"
+				  ></div>
 				</div>
 			  </div>
 			</div>
@@ -121,17 +153,31 @@
 		
 		<!-- Row 2 -->
 		<tr class="hover:bg-gray-700 cursor-pointer" onclick="toggleCollapse('collapsible-content-2')">
-		  <td class="px-4 py-3 whitespace-nowrap">2022</td>
-		  <td class="px-4 py-3 whitespace-nowrap truncate" title="Mobile App Development">Mobile App Development</td>
-		  <td class="px-4 py-3 whitespace-nowrap">
-			<!-- Tags Container with Flex Column -->
-			<div class="flex flex-col space-y-2">
+		  <!-- Updated Year cell -->
+		  <td class="px-2 md:px-4 py-3 whitespace-nowrap text-center">2022</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate" title="Mobile App Development">
+			Mobile App Development
+			<!-- Mobile-only Role tags (stacked under Project) -->
+			<div class="md:hidden mt-2">
+			  <span class="inline-block bg-blue-700 text-gray-100 text-xs px-2 py-1 rounded-full mr-1">Prototyping</span>
+			  <span class="inline-block bg-red-700 text-gray-100 text-xs px-2 py-1 rounded-full">Testing</span>
+			</div>
+		  </td>
+		  <!-- Role column hidden on mobile -->
+		  <td class="px-4 py-3 whitespace-nowrap hidden md:table-cell">
+			<!-- Updated Flex Classes Here: flex-nowrap to prevent wrapping -->
+			<div class="flex flex-nowrap space-x-2">
 			  <span class="inline-block bg-blue-700 text-gray-100 text-xs px-2 py-1 rounded-full">Prototyping</span>
 			  <span class="inline-block bg-red-700 text-gray-100 text-xs px-2 py-1 rounded-full">Testing</span>
 			</div>
 		  </td>
-		  <!-- Hide "Overview" column on mobile -->
-		  <td class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell" title="Developed a cross-platform mobile application to streamline user interactions and improve engagement.">Developed a cross-platform mobile application to streamline user interactions and improve engagement.</td>
+		  <!-- Hide "Overview" column on mobile with Truncation -->
+		  <td
+			class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell overview-column"
+			title="Developed a cross-platform mobile application to streamline user interactions and improve engagement."
+		  >
+			Developed a cross-platform mobile application to streamline user interactions and improve engagement.
+		  </td>
 		  <!-- Hide "Images" column on mobile -->
 		  <td class="px-4 py-3 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-2">0</td>
 		</tr>
@@ -148,13 +194,13 @@
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/203');" 
-					onclick="handleImageClick(event, 'collapsible-content-2', 0)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-2', 0)"
+				  ></div>
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/204');" 
-					onclick="handleImageClick(event, 'collapsible-content-2', 1)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-2', 1)"
+				  ></div>
 				</div>
 			  </div>
 			</div>
@@ -163,17 +209,31 @@
 		
 		<!-- Row 3 -->
 		<tr class="hover:bg-gray-700 cursor-pointer" onclick="toggleCollapse('collapsible-content-3')">
-		  <td class="px-4 py-3 whitespace-nowrap">2021</td>
-		  <td class="px-4 py-3 whitespace-nowrap truncate" title="Website Optimization">Website Optimization</td>
-		  <td class="px-4 py-3 whitespace-nowrap">
-			<!-- Tags Container with Flex Column -->
-			<div class="flex flex-col space-y-2">
+		  <!-- Updated Year cell -->
+		  <td class="px-2 md:px-4 py-3 whitespace-nowrap text-center">2021</td>
+		  <td class="px-4 py-3 whitespace-nowrap truncate" title="Website Optimization">
+			Website Optimization
+			<!-- Mobile-only Role tags (stacked under Project) -->
+			<div class="md:hidden mt-2">
+			  <span class="inline-block bg-purple-700 text-gray-100 text-xs px-2 py-1 rounded-full mr-1">SEO</span>
+			  <span class="inline-block bg-yellow-600 text-gray-900 text-xs px-2 py-1 rounded-full">Performance</span>
+			</div>
+		  </td>
+		  <!-- Role column hidden on mobile -->
+		  <td class="px-4 py-3 whitespace-nowrap hidden md:table-cell">
+			<!-- Updated Flex Classes Here: flex-nowrap to prevent wrapping -->
+			<div class="flex flex-nowrap space-x-2">
 			  <span class="inline-block bg-purple-700 text-gray-100 text-xs px-2 py-1 rounded-full">SEO</span>
 			  <span class="inline-block bg-yellow-600 text-gray-900 text-xs px-2 py-1 rounded-full">Performance</span>
 			</div>
 		  </td>
-		  <!-- Hide "Overview" column on mobile -->
-		  <td class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell" title="Optimized website performance to improve load times and search engine rankings.">Optimized website performance to improve load times and search engine rankings.</td>
+		  <!-- Hide "Overview" column on mobile with Truncation -->
+		  <td
+			class="px-4 py-3 whitespace-nowrap truncate hidden md:table-cell overview-column"
+			title="Optimized website performance to improve load times and search engine rankings."
+		  >
+			Optimized website performance to improve load times and search engine rankings.
+		  </td>
 		  <!-- Hide "Images" column on mobile -->
 		  <td class="px-4 py-3 whitespace-nowrap image-count hidden md:table-cell" data-target="collapsible-content-3">0</td>
 		</tr>
@@ -190,23 +250,23 @@
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/205');" 
-					onclick="handleImageClick(event, 'collapsible-content-3', 0)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-3', 0)"
+				  ></div>
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/206');" 
-					onclick="handleImageClick(event, 'collapsible-content-3', 1)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-3', 1)"
+				  ></div>
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/207');" 
-					onclick="handleImageClick(event, 'collapsible-content-3', 2)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-3', 2)"
+				  ></div>
 				  <div 
 					class="w-20 h-20 rounded-md bg-center bg-cover cursor-pointer" 
 					style="background-image: url('https://picsum.photos/208');" 
-					onclick="handleImageClick(event, 'collapsible-content-3', 3)">
-				  </div>
+					onclick="handleImageClick(event, 'collapsible-content-3', 3)"
+				  ></div>
 				</div>
 			  </div>
 			</div>
@@ -249,7 +309,7 @@
 	function showModal(imageUrl) {
 	  const modal = document.getElementById('modal');
 	  const modalContent = document.getElementById('modal-content');
-	  modalContent.style.backgroundImage = `url('${imageUrl}')`; // Set modal image
+	  modalContent.style.backgroundImage = `url('${imageUrl}')`;
 	  modal.classList.remove('modal-hidden');
 	  modal.classList.add('modal-visible');
 	}
@@ -271,19 +331,16 @@
 
 	window.onload = initializeImageCounts;
 
-	// Fetch all images for a given collapsible section
 	function getImagesInSection(sectionId) {
 	  const section = document.getElementById(sectionId);
 	  const divBoxes = section.querySelectorAll('.images div[style]');
 	  return Array.from(divBoxes).map(div => {
-		// Extract the background-image URL
 		const style = div.getAttribute('style');
 		const match = style.match(/url\(['"]?(.*?)['"]?\)/);
 		return match ? match[1] : null;
 	  }).filter(Boolean);
 	}
 
-	// Handle click on image
 	function handleImageClick(event, sectionId, index) {
 	  event.stopPropagation();
 	  currentImages = getImagesInSection(sectionId);
@@ -291,31 +348,25 @@
 	  showModal(currentImages[currentIndex]);
 	}
 
-	// Close on content click (excluding images, which use event.stopPropagation())
 	function closeOnContentClick(event, contentId) {
 	  toggleCollapse(contentId);
 	}
 
-	// Keyboard navigation for modal
 	document.addEventListener('keydown', (e) => {
 	  const modal = document.getElementById('modal');
 	  if (modal.classList.contains('modal-visible')) {
 		if (e.key === 'ArrowLeft') {
-		  // Previous image
 		  currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
 		  showModal(currentImages[currentIndex]);
 		} else if (e.key === 'ArrowRight') {
-		  // Next image
 		  currentIndex = (currentIndex + 1) % currentImages.length;
 		  showModal(currentImages[currentIndex]);
 		} else if (e.key === 'Escape') {
-		  // Close modal on Escape key
 		  hideModal();
 		}
 	  }
 	});
 
-	// Wireframe Mode Toggle
 	const wireframeButton = document.getElementById('wireframe-toggle');
 	wireframeButton.addEventListener('click', () => {
 	  wireframeEnabled = !wireframeEnabled;
