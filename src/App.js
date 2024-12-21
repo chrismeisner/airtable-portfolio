@@ -5,6 +5,7 @@ import Airtable from "airtable";
 import SimpleHero from "./components/SimpleHero";
 import Capabilities from "./components/Capabilities";
 import CollapsibleTable from "./components/CollapsibleTable";
+import About from "./components/About"; // Import the About component
 
 const App = () => {
   const [tableProjects, setTableProjects] = useState([]);
@@ -207,6 +208,11 @@ const App = () => {
             {/* Projects Table Section */}
             <section className="mt-12">
               <CollapsibleTable data={tableProjects} />
+            </section>
+
+            {/* About Section */}
+            <section className="mt-12">
+              <About />
             </section>
           </div>
         )}

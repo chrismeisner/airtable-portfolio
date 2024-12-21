@@ -1,10 +1,10 @@
-// File: /src/components/About.js
+// src/components/About.js
 
 import React from "react";
 
 const About = () => {
   return (
-	<div className="flex flex-col md:flex-row items-center bg-black text-white p-8 md:p-16">
+	<div className="flex flex-col md:flex-row items-center bg-gray-900 text-white p-8 md:p-16 rounded-lg shadow-md">
 	  <div className="md:w-1/2">
 		<h2 className="text-3xl md:text-4xl font-bold mb-6">A real human being</h2>
 		<p className="text-lg md:text-xl leading-relaxed mb-6">
