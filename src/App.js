@@ -4,37 +4,29 @@ import React, { useEffect, useState } from "react";
 import Airtable from "airtable";
 import SimpleHero from "./components/SimpleHero";
 import Capabilities from "./components/Capabilities";
-import PortfolioProjectPreview from "./components/PortfolioProjectPreview";
-import SimpleTable from "./components/SimpleTable";
-import CollapsibleTable from "./components/CollapsibleTable"; // Import the new component
-import Process from "./components/Process";
-import Testimonials from "./components/Testimonials";
-import About from "./components/About";
+import CollapsibleTable from "./components/CollapsibleTable";
 
 const App = () => {
-  const [projects, setProjects] = useState([]);
-  const [featuredProjects, setFeaturedProjects] = useState([]);
   const [tableProjects, setTableProjects] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
+  const [capabilitiesData, setCapabilitiesData] = useState([]); // New state for Capabilities
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [loadingCapabilities, setLoadingCapabilities] = useState(true); // New loading state
   const [wireframeMode, setWireframeMode] = useState(false);
 
   console.log("App component rendered");
 
   useEffect(() => {
-    console.log("Fetching projects and testimonials from Airtable");
-    const fetchProjectsAndTestimonials = async () => {
+    console.log("Fetching table projects from Airtable");
+    const fetchTableProjects = async () => {
       try {
         const base = new Airtable({
           apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
         }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
         const projectsTable = process.env.REACT_APP_AIRTABLE_TABLE_NAME;
-        const testimonialsTable = "Testimonials";
 
         const uniqueRecords = new Map();
-        const uniqueTestimonials = new Map();
 
         const isValidURL = (string) => {
           try {
@@ -52,7 +44,10 @@ const App = () => {
               (records, fetchNextPage) => {
                 records.forEach((record) => {
                   const visibility = record.fields["Visibility"] || [];
-                  if (visibility.length > 0 && !uniqueRecords.has(record.id)) {
+                  if (
+                    visibility.includes("Table") &&
+                    !uniqueRecords.has(record.id)
+                  ) {
                     const url = record.fields["URL"] || "#";
                     uniqueRecords.set(record.id, {
                       title: record.fields["Title"] || "Untitled",
@@ -60,8 +55,9 @@ const App = () => {
                       urlTitle: record.fields["URL Title"] || url || "#",
                       description: record.fields["Description"] || "",
                       tags: record.fields["Tags"] || [],
-                      images: record.fields["Images"]?.map((image) => image.url) || [],
-                      visibility: visibility,
+                      images:
+                        record.fields["Images"]?.map((image) => image.url) ||
+                        [],
                       year: record.fields["Year"] || "N/A",
                     });
                   }
@@ -81,85 +77,92 @@ const App = () => {
             );
         });
 
-        const fetchTestimonials = new Promise((resolve, reject) => {
-          base(testimonialsTable)
+        const allTableProjects = await fetchProjects;
+
+        console.log("Fetched table projects:", allTableProjects);
+
+        setTableProjects(allTableProjects);
+        setLoadingProjects(false);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setError(err);
+        setLoadingProjects(false);
+      }
+    };
+
+    fetchTableProjects();
+  }, []);
+
+  useEffect(() => {
+    console.log("Fetching capabilities from Airtable");
+    const fetchCapabilities = async () => {
+      try {
+        const base = new Airtable({
+          apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
+        }).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
+
+        const capabilitiesTable = "Capabilities"; // Ensure this matches your Airtable table name
+
+        const capabilitiesRecords = [];
+
+        const fetchRecords = new Promise((resolve, reject) => {
+          base(capabilitiesTable)
             .select({ view: "Grid view" })
             .eachPage(
               (records, fetchNextPage) => {
                 records.forEach((record) => {
-                  const visibility = record.fields["Visibility"];
-                  if (
-                    visibility === "Yes" &&
-                    !uniqueTestimonials.has(record.id)
-                  ) {
-                    uniqueTestimonials.set(record.id, {
-                      quote: record.fields["Quote"] || "",
-                      name: record.fields["Name"] || "Anonymous",
-                      title: record.fields["Title"] || "",
-                      image:
-                        record.fields["Image"]?.[0]?.url ||
-                        "https://via.placeholder.com/50",
-                    });
-                  }
+                  const name = record.fields["Name"] || "Untitled";
+                  const summary = record.fields["Summary"] || "";
+                  const pointsRaw = record.fields["Points"] || "";
+                  const points = pointsRaw
+                    .split("\n")
+                    .map((point) => point.replace(/^- /, "").trim())
+                    .filter((point) => point.length > 0);
+                  capabilitiesRecords.push({
+                    title: name,
+                    description: summary,
+                    points: points, // Add points array
+                  });
                 });
                 fetchNextPage();
               },
               (err) => {
                 if (err) {
-                  console.error("Airtable Testimonials error:", err);
-                  console.log("Rejecting fetchTestimonials promise");
+                  console.error("Airtable Capabilities error:", err);
                   reject(err);
                 } else {
-                  console.log("Resolving fetchTestimonials promise");
-                  resolve(Array.from(uniqueTestimonials.values()));
+                  resolve();
                 }
               }
             );
         });
 
-        const [allProjects, allTestimonials] = await Promise.all([
-          fetchProjects,
-          fetchTestimonials,
-        ]);
+        await fetchRecords;
 
-        console.log("Fetched projects:", allProjects);
-        console.log("Fetched testimonials:", allTestimonials);
+        console.log("Fetched capabilities:", capabilitiesRecords);
 
-        setProjects(allProjects);
-
-        const featured = allProjects.filter((project) =>
-          project.visibility.includes("Featured")
-        );
-        const table = allProjects.filter((project) =>
-          project.visibility.includes("Table")
-        );
-
-        console.log("Featured projects:", featured);
-        console.log("Table projects:", table);
-
-        setFeaturedProjects(featured);
-        setTableProjects(table);
-
-        setTestimonials(allTestimonials);
-        setLoading(false);
+        setCapabilitiesData(capabilitiesRecords);
+        setLoadingCapabilities(false);
       } catch (err) {
         console.error("Fetch error:", err);
         setError(err);
-        setLoading(false);
+        setLoadingCapabilities(false);
       }
     };
 
-    fetchProjectsAndTestimonials();
+    fetchCapabilities();
   }, []);
 
   if (error) {
     console.log("Rendering error state");
     return (
       <div className="bg-red-100 text-red-800 p-4">
-        <p>Error fetching projects: {error.message}</p>
+        <p>Error fetching data: {error.message}</p>
       </div>
     );
   }
+
+  const isLoading = loadingProjects || loadingCapabilities;
 
   return (
     <div
@@ -167,6 +170,7 @@ const App = () => {
         wireframeMode ? "wireframe" : ""
       } py-6 sm:py-12 lg:py-4 px-4 sm:px-8 lg:px-4`}
     >
+      {/* Wireframe Toggle Button */}
       <button
         onClick={() => {
           console.log(
@@ -179,62 +183,34 @@ const App = () => {
         Toggle Wireframe
       </button>
 
-      {loading ? (
-        console.log("Rendering loading state"),
-        (
-          <div className="flex justify-center items-center min-h-screen">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      {/* Consistent Container */}
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        {isLoading ? (
+          console.log("Rendering loading state"),
+          (
+            <div className="flex justify-center items-center min-h-screen">
+              <div
+                className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+                role="status"
+                aria-label="loading"
+              ></div>
+            </div>
+          )
+        ) : (
+          <div className="animate-fade-in space-y-12">
+            {/* Hero Section */}
+            <SimpleHero />
+
+            {/* Capabilities Section */}
+            <Capabilities capabilities={capabilitiesData} />
+
+            {/* Projects Table Section */}
+            <section className="mt-12">
+              <CollapsibleTable data={tableProjects} />
+            </section>
           </div>
-        )
-      ) : (
-        <div className="animate-fade-in">
-          {/* Hero Section */}
-          <SimpleHero />
-
-          {/* Capabilities Section */}
-          <Capabilities />
-
-          {/* Portfolio Projects Section */}
-          <section className="mt-12">
-            <h2 className="text-2xl font-bold mb-4">Portfolio Projects</h2>
-            {featuredProjects.map((project, index) => {
-              console.log(`Rendering PortfolioProjectPreview for project ${index}`);
-              return (
-                <PortfolioProjectPreview
-                  key={index}
-                  title={project.title}
-                  url={project.url}
-                  urlTitle={project.urlTitle}
-                  description={project.description}
-                  tags={project.tags}
-                  images={project.images}
-                  year={project.year}
-                />
-              );
-            })}
-          </section>
-
-          {/* Process Section */}
-          <Process />
-
-          {/* Testimonials Section */}
-          <Testimonials testimonials={testimonials} />
-
-          {/* About Section */}
-          <About />
-
-          {/* Projects Table Section */}
-          <section className="mt-12">
-            <h2 className="text-2xl font-bold mb-4">Projects Table</h2>
-            {/* Existing SimpleTable */}
-            <SimpleTable data={tableProjects} />
-
-            {/* New CollapsibleTable */}
-            <h2 className="text-2xl font-bold my-4">Collapsible Projects Table</h2>
-            <CollapsibleTable data={tableProjects} />
-          </section>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

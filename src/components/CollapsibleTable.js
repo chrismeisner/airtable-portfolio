@@ -1,3 +1,5 @@
+// src/components/CollapsibleTable.js
+
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import PropTypes from "prop-types";
 import "./styles/CollapsibleTable.css";
@@ -97,7 +99,7 @@ const CollapsibleTable = ({ data }) => {
   };
 
   return (
-	<div className="w-full max-w-screen-xl mx-auto p-4 bg-gray-800 text-gray-200 rounded-lg shadow-md mt-8 overflow-x-auto">
+	<div className="w-full bg-gray-800 text-gray-200 rounded-lg shadow-md mt-8 overflow-x-auto">
 	  <table className="min-w-full divide-y divide-gray-700 table-auto">
 		<thead className="bg-gray-700">
 		  <tr>
